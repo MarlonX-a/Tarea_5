@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos personales</title>
+    <link rel = "stylesheet" href="styles.css">
+</head>
+<body>
+    <div class = "contenedor">
+        <h1>Datos del Cliente</h1>
+        <form action = "" method = "get">
+            <label >
+                Cedula de Identidad:
+            </label><input type = "text" name = "CI" id="cedula">
+            <label >
+                Apellidos:
+            </label><input type = "text" name = "Apellidos" id = "_Apellidos">
+            <label >
+                Nombres:
+            </label><input type = "text" name = "Nombres" id = "_Nombres">
+            <label >
+                Fecha de nacimiento:
+            </label><input type = "date" name = "date_control" id = "_cumple">
+            <label >
+                Número de celular:
+            </label><input type = "tel" name = "celular" id="celu">
+            <label >
+                correo electronico:
+            </label><input type = "email" name = "email" id="correo">
+            <label >
+                Dirección:
+            </label><input type = "text" name = "direccion" id="address">
+            <button>Guardar</button>
+        </form>
+    </div>
+
+    <script>
+
+        // Espera a que todo cargue
+        document.addEventListener("DOMContentLoaded", function () {
+            const formulario = document.querySelector("form");
+            const campoCedula = document.getElementById("cedula");
+            const campoNombre = document.getElementById("_Nombres");
+            const campoApellido = document.getElementById("_Apellidos");
+            const campoFecha_N = document.getElementById("_cumple");
+            const campoCelu = document.getElementById("celu");
+            const campoEmail = document.getElementById("correo");
+            const campoDireccion = document.getElementById("address");
+
+            formulario.addEventListener("submit", function (e) {
+                //Validar cedula
+                const cedula = campoCedula.value.trim();
+
+                if (cedula === "") {
+                    alert("La cédula no puede estar vacía.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (!/^\d+$/.test(cedula)) {
+                    alert("La cédula solo debe contener números.");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (cedula.length !== 10) {
+                    alert("La cédula debe tener exactamente 10 dígitos.");
+                    e.preventDefault();
+                    return;
+                }
+
+
+                //Valida los apellidos
+                const apellidos = campoApellido.value.trim();
+
+                if (apellidos === "") {
+                    alert("El campo apellido no puede estar vacio");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (!/^[a-zA-ZÁÉÍÓÚáéíóúñÑ\s]+$/.test(apellidos)) {
+                    alert("El campo Apellidos solo acepta letras");
+                    e.preventDefault();
+                    return;
+                }
+
+
+                //Valida los Nombres
+                const nombres = campoNombre.value.trim();
+                
+                if (nombres === "") {
+                    alert("El campo nombre no puede estar vacio");
+                    e.preventDefault();
+                    return;
+                }
+
+                if (!/^[a-zA-ZÁÉÍÓÚáéíóúñÑ\s]+$/.test(nombres)) {
+                    alert("El campo Nombres solo acepta letras");
+                    e.preventDefault();
+                    return;
+                }
+
+
+                //Valida la fecha
+                const fecha = campoFecha_N.value.trim();
+
+                if (fecha === "") {
+                    alert("La fecha no puede estar vacia");
+                    e.preventDefault();
+                    return;
+                }
+
+                const fechaNacimiento = new Date(fecha);
+                const hoy = new Date();
+
+                if (fechaNacimiento > hoy) {
+                    alert("La fecha de nacimiento no puede ser en el futuro.");
+                    e.preventDefault();
+                    return;
+                }
+
+                const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+                const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+                const dia = hoy.getDate() - fechaNacimiento.getDate();
+
+                if (
+                    edad < 18 ||
+                    (edad === 18 && mes < 0) ||
+                    (edad === 18 && mes === 0 && dia < 0)
+                ) {
+                    alert("Debes ser mayor de edad (18 años o más).");
+                    e.preventDefault();
+                    return;
+                }
+                
+
+                //validar celular
+                const celular = campoCelu.value.trim();
+
+                if (celular === ""){
+                    alert("El campo celular no puede estar vacio")
+                    e.preventDefault();
+                    return;
+                }
+
+                const celularRegex = /^[0-9]{10}$/;
+                if (!celularRegex.test(celular)) {
+                    alert("Ingresa un número de celular válido de 10 dígitos.");
+                    e.preventDefault(); // Detiene el envío del formulario
+                    return;
+                }
+
+                //validar Dirección
+
+                const direccion = campoDireccion.value.trim();
+                if (direccion === "" || direccion.length < 5) {
+                    alert("La dirección es obligatoria y debe tener al menos 5 caracteres.");
+                    e.preventDefault(); // Detiene el envío del formulario
+                    return;
+                }
+
+
+                //validar correo
+                const email = campoEmail.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!emailRegex.test(email)) {
+                    alert("Por favor, ingresa un correo electrónico válido.");
+                    e.preventDefault(); // Detiene el envío del formulario
+                    return;
+                }
+                // Si todo está bien, el formulario se puede enviar
+            });
+
+        });
+
+
+    </script>
+</body>
+</html>
